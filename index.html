@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Entrar no Chat</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ADD8E6;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      background-color: #4B0082;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      margin: 0;
+    }
+
+    form {
+      background-color: white;
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #999;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #4B0082;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    button:hover {
+      background-color: #3a006a;
+    }
+
+    #erro {
+      color: red;
+      text-align: center;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Entrar no Chat</h1>
+  <form id="form">
+    <label>Nome:
+      <input type="text" id="nome" required>
+    </label>
+    <label>Sala:
+      <input type="text" id="sala" required>
+    </label>
+    <label>Senha da sala:
+      <input type="password" id="senha" required>
+    </label>
+    <button type="submit">Entrar</button>
+  </form>
+  <p id="erro"></p>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const form = document.getElementById('form');
+    const erro = document.getElementById('erro');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const nome = document.getElementById('nome').value;
+      const sala = document.getElementById('sala').value;
+      const senha = document.getElementById('senha').value;
+
+      socket.emit('verificarOuCriarSala', { sala, senha });
+
+      socket.once('senhaValida', () => {
+  localStorage.setItem('nome', nome);
+  localStorage.setItem('sala', sala);
+  window.location.href = 'chat.html';
+});
+
+socket.once('salaCriada', () => {
+  localStorage.setItem('nome', nome);
+  localStorage.setItem('sala', sala);
+  window.location.href = 'chat.html';
+});
+
+socket.once('senhaInvalida', () => {
+  erro.textContent = 'Senha incorreta para a sala!';
+});
+    });
+  </script>
+</body>
+</html>

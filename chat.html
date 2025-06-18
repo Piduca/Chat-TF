@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Chat</title>
+  <style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #ADD8E6;
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    background-color: #4B0082;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 15px 0;
+  }
+
+  #chat {
+    background-color: white;
+    margin: 20px auto;
+    padding: 15px;
+    width: 80%;
+    max-width: 800px;
+    height: 400px;
+    overflow-y: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #999;
+  }
+
+  #mensagem {
+    width: 70%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10%;
+  }
+
+  button {
+    padding: 10px 20px;
+    background-color: #4B0082;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #3a006a;
+  }
+
+  input[type="file"] {
+    display: block;
+    margin: 10px auto;
+  }
+
+  p {
+    margin: 5px 0;
+  }
+
+  img {
+    border-radius: 6px;
+    margin: 5px 0;
+    max-width: 100%;
+    height: auto;
+  }
+  .upload-container {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.upload-button {
+  background-color: #4B0082;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-block;
+  margin-top: 10px;
+  transition: background-color 0.2s;
+}
+
+.upload-button:hover {
+  background-color: #3a006a;
+}
+</style>
+</head>
+<body>
+  <h1>Chat da Sala</h1>
+  <div id="chat"></div>
+  <div style="text-align: center; margin-top: 10px;">
+  <button onclick="sairDaSala()">Sair da sala</button>
+  </div>
+  <div style="text-align: center; margin: 20px;">
+    <input id="mensagem" placeholder="Digite uma mensagem..." />
+    <button onclick="enviarMensagem()">Enviar</button>
+    <br><br>
+    <div class="upload-container">
+  <label for="uploadInput" class="upload-button">Escolha o ficheiro</label>
+  <input type="file" id="uploadInput" style="display: none;" />
+  </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="client.js"></script>
+  <script>
+    window.addEventListener("beforeunload", () => {
+      localStorage.removeItem("nome");
+      localStorage.removeItem("sala");
+    });
+  </script>
+</body>
+</html>
